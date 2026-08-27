@@ -24,27 +24,27 @@ vehicles_mudline/
 Three descriptions of the same sixty vehicles, and you need all three for
 different reasons.
 
-**The CDX1 files** are what RASAero actually read. They are the authority on
+The CDX1 files are what RASAero actually read, and they are the authority on
 geometry. They are written field-by-field by `vehicles.py` rather than by the
-tool's own exporter, deliberately — an oracle that shared the exporter's
+tool's own exporter, deliberately, because an oracle that shared the exporter's
 assumptions could not detect them. That also means they can be degenerate on
-purpose: a fin can shorter than its own shoulder, a boattail well past the
-17.5° separation clamp. Shapes chosen to drive one branch of the solver, not
-to be built.
+purpose: a fin can shorter than its own shoulder, or a boattail well past the
+17.5° separation clamp. These are shapes chosen to drive one branch of the
+solver, not to be built.
 
-**The dumps** are RASAero's per-term output — friction, form, wave, base,
-each fin contribution, protuberance, CN potential and viscous, CP, Reynolds
-number — at 0.01 Mach steps across all three solver regimes. A disagreement in
-total C_D tells you nothing about which term is wrong, which is why the
-per-term dump and not the Aero Plots CSV is the reference.
+The dumps are RASAero's per-term output at 0.01 Mach steps across all three
+solver regimes, covering friction, form, wave, base, each fin contribution,
+protuberance, CN potential and viscous, CP and Reynolds number. A disagreement
+in total C_D tells you nothing about which term is wrong, which is why the
+per-term dump is the reference rather than the Aero Plots CSV.
 
 Full resolution is kept. The whole set compresses to a few megabytes, and
 decimating it would leave gaps exactly where a regression is most likely to
 hide: at the branch boundaries the sweep steps across.
 
-**The Mudline models** are so you can *look* at what is being compared. Open
-one in the application, orbit it, fly it. They are generated approximations
-and the oracle does not use them — see the caveat below.
+The Mudline models are there so you can *look* at what is being compared. Open
+one in the application, orbit it, fly it. They are generated approximations and
+the oracle does not use them, for the reasons in the caveat below.
 
 ---
 
@@ -76,22 +76,22 @@ python -m oracle.mudline_vehicles            # write them
 python -m oracle.mudline_vehicles --report   # convert and report, write nothing
 ```
 
-**These are approximations. Do not cite one as evidence of what RASAero
-computed** — cite the CDX1 and the dump. Two things can fail to survive the
-conversion:
+These are approximations. Do not cite one as evidence of what RASAero
+computed; cite the CDX1 and the dump. Two things can fail to survive the
+conversion.
 
-* Vehicles that are deliberately degenerate. Mudline's parms are bounded
-  because real parts are, so a shape chosen to break RASAero's solver may not
-  be representable at all. Any that are not get reported as skipped rather
-  than silently clamped into a different vehicle. All sixty convert today --
-  the one that did not, `finsweep_12p0`, turned out to be Mudline's validator
-  wrongly refusing a swept fin whose tip trails past the tail, which is a
-  configuration real vehicles have. Fixing that was worth more than the
-  vehicle was.
-* Nose shapes with no Mudline generator. LV-Haack and Parabolic are
-  approximated by von Kármán and elliptical respectively, and every model that
-  happens to carries the substitution in its own description, so a reader is
-  never left guessing which shape they are looking at.
+First, vehicles that are deliberately degenerate. Mudline's parms are bounded
+because real parts are, so a shape chosen to break RASAero's solver may not be
+representable at all. Any that are not get reported as skipped rather than
+silently clamped into a different vehicle. All sixty convert today. The one
+that did not, `finsweep_12p0`, turned out to be Mudline's validator wrongly
+refusing a swept fin whose tip trails past the tail, which is a configuration
+real vehicles have. Fixing that was worth more than the vehicle was.
+
+Second, nose shapes with no Mudline generator. LV-Haack and Parabolic are
+approximated by von Kármán and elliptical respectively, and every model that
+relies on a substitution carries it in its own description, so a reader is
+never left guessing which shape they are looking at.
 
 Inclined-plate protuberances are also approximate: RASAero takes an area and
 an angle, Mudline's `Protuberance` takes an area and a shape coefficient.
@@ -101,10 +101,10 @@ an angle, Mudline's `Protuberance` takes an area and a shape coefficient.
 ## Regenerating from RASAero II
 
 Only needed when adding test vehicles or checking against a new RASAero
-release. **It requires a licensed RASAero II 1.0.2.0 on Windows, and it takes
-about twenty minutes of exclusive control of the desktop** — the driver
-synthesises keystrokes and steals foreground, so you cannot use the machine
-while it runs.
+release. It requires a licensed RASAero II 1.0.2.0 on Windows, and it takes
+about twenty minutes of exclusive control of the desktop, because the driver
+synthesises keystrokes and steals foreground. You cannot use the machine while
+it runs.
 
 ```bash
 # 1. Run every test-matrix vehicle through RASAero. Writes CDX1, the raw
@@ -138,12 +138,12 @@ layout change in a different RASAero version fails loudly instead of producing
 a stale or truncated dump. If you are on a version other than 1.0.2.0, expect
 the driver to stop rather than to quietly lie.
 
-One case failing is reported and skipped, not raised — a single unloadable
-geometry should not throw away an hour of completed work.
+One case failing is reported and skipped rather than raised, because a single
+unloadable geometry should not throw away an hour of completed work.
 
 There is a second driver, `tools/rasaero_driver.ps1`, which does the same for
-the Aero Plots CSV export. That one feeds the application's
-`"rasaero-app"` aero method, not the oracle.
+the Aero Plots CSV export. That one feeds the application's `"rasaero-app"`
+aero method rather than the oracle.
 
 ---
 
@@ -155,8 +155,8 @@ purpose.
 
 It does not prove either of them is right. For that, see
 `validation/scoreboard.py`, which scores both against measured flight
-apogees, and `validation/telemetry.py`, which reconstructs drag directly from
-a flight's accelerometer log and finds the model 40–100% high through the
+apogees, and `validation/telemetry.py`, which reconstructs drag directly from a
+flight's accelerometer log and finds the model 40 to 100% high through the
 supersonic coast.
 
 Faithfulness and correctness are different claims. This directory only makes
