@@ -1,0 +1,498 @@
+{
+  "format": "rocket_model.parametric.v1",
+  "name": "Biprop Testbed",
+  "revision": "A",
+  "description": "2500 lbf kerolox testbed: 9 in x 20 ft, 25 s burn, O/F 2.3. Rough numbers on purpose; exists to exercise the tank-fed drain path.",
+  "vehicle_class": "rocket",
+  "clip_overlap_m": 0.0005,
+  "tree": {
+    "name": "Biprop Testbed",
+    "kind": "component",
+    "material": "cfrp_quasi_isotropic",
+    "aero_role": "auto",
+    "parms": {},
+    "children": [
+      {
+        "name": "nose",
+        "kind": "stack",
+        "material": "g10_fiberglass",
+        "aero_role": "auto",
+        "parms": {
+          "wall_thickness": 0.003
+        },
+        "children": [],
+        "nose_profile": "ogive",
+        "nose_tip_radius_m": 0.004,
+        "sections": [
+          {
+            "name": "nose_0",
+            "shape": "circle",
+            "parms": {
+              "station": 0.0,
+              "width": 0.008,
+              "height": 0.008,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_1",
+            "shape": "circle",
+            "parms": {
+              "station": 0.00547810463172671,
+              "width": 0.008,
+              "height": 0.008,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_2",
+            "shape": "circle",
+            "parms": {
+              "station": 0.02185239926619431,
+              "width": 0.010006764734550089,
+              "height": 0.010006764734550089,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_3",
+            "shape": "circle",
+            "parms": {
+              "station": 0.04894348370484647,
+              "width": 0.022090065439837048,
+              "height": 0.022090065439837048,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_4",
+            "shape": "circle",
+            "parms": {
+              "station": 0.08645454235739913,
+              "width": 0.03823433825987799,
+              "height": 0.03823433825987799,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_5",
+            "shape": "circle",
+            "parms": {
+              "station": 0.1339745962155613,
+              "width": 0.05771364038369242,
+              "height": 0.05771364038369242,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_6",
+            "shape": "circle",
+            "parms": {
+              "station": 0.19098300562505255,
+              "width": 0.07965740690243273,
+              "height": 0.07965740690243273,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_7",
+            "shape": "circle",
+            "parms": {
+              "station": 0.25685517452260564,
+              "width": 0.10309185292265077,
+              "height": 0.10309185292265077,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_8",
+            "shape": "circle",
+            "parms": {
+              "station": 0.33086939364114176,
+              "width": 0.12698504293053858,
+              "height": 0.12698504293053858,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_9",
+            "shape": "circle",
+            "parms": {
+              "station": 0.41221474770752686,
+              "width": 0.1502932394761487,
+              "height": 0.1502932394761487,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_10",
+            "shape": "circle",
+            "parms": {
+              "station": 0.4999999999999999,
+              "width": 0.17200632496388124,
+              "height": 0.17200632496388124,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_11",
+            "shape": "circle",
+            "parms": {
+              "station": 0.5932633569241996,
+              "width": 0.1911903856009296,
+              "height": 0.1911903856009296,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_12",
+            "shape": "circle",
+            "parms": {
+              "station": 0.6909830056250525,
+              "width": 0.20702589710312402,
+              "height": 0.20702589710312402,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_13",
+            "shape": "circle",
+            "parms": {
+              "station": 0.7920883091822406,
+              "width": 0.21884030758380923,
+              "height": 0.21884030758380923,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_14",
+            "shape": "circle",
+            "parms": {
+              "station": 0.8954715367323464,
+              "width": 0.22613413848790742,
+              "height": 0.22613413848790742,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_15",
+            "shape": "circle",
+            "parms": {
+              "station": 0.9999999999999999,
+              "width": 0.22860000000000014,
+              "height": 0.22860000000000014,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "name": "recovery_bay",
+        "kind": "stack",
+        "material": "aluminium_6061_t6",
+        "aero_role": "auto",
+        "parms": {
+          "wall_thickness": 0.0025
+        },
+        "children": [],
+        "sections": [
+          {
+            "name": "bay_fwd",
+            "shape": "circle",
+            "parms": {
+              "station": 0.9994999999999999,
+              "width": 0.2286,
+              "height": 0.2286,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "bay_aft",
+            "shape": "circle",
+            "parms": {
+              "station": 1.6495,
+              "width": 0.2286,
+              "height": 0.2286,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          }
+        ],
+        "clip_to": "Biprop Testbed/nose",
+        "clip_locked": true,
+        "clip_side": "aft",
+        "clip_flush": true
+      },
+      {
+        "name": "lox_tank",
+        "kind": "tank",
+        "material": "aluminium_6061_t6",
+        "aero_role": "auto",
+        "parms": {
+          "diameter": 0.2286,
+          "barrel_length": 1.62,
+          "dome_ratio": 0.707,
+          "wall_thickness": 0.0025,
+          "station": 1.5681899000000001,
+          "propellant_mass": 70.9,
+          "propellant_density": 1140.0,
+          "ullage": 0.05
+        },
+        "children": [],
+        "clip_to": "Biprop Testbed/recovery_bay",
+        "clip_locked": true,
+        "clip_side": "aft",
+        "clip_flush": true,
+        "contents": "oxidizer"
+      },
+      {
+        "name": "intertank",
+        "kind": "stack",
+        "material": "aluminium_6061_t6",
+        "aero_role": "auto",
+        "parms": {
+          "wall_thickness": 0.0025
+        },
+        "children": [],
+        "sections": [
+          {
+            "name": "intertank_fwd",
+            "shape": "circle",
+            "parms": {
+              "station": 3.2685,
+              "width": 0.2286,
+              "height": 0.2286,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "intertank_aft",
+            "shape": "circle",
+            "parms": {
+              "station": 3.7185,
+              "width": 0.2286,
+              "height": 0.2286,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          }
+        ],
+        "clip_to": "Biprop Testbed/lox_tank",
+        "clip_locked": true,
+        "clip_side": "aft",
+        "clip_flush": true
+      },
+      {
+        "name": "fuel_tank",
+        "kind": "tank",
+        "material": "aluminium_6061_t6",
+        "aero_role": "auto",
+        "parms": {
+          "diameter": 0.2286,
+          "barrel_length": 0.95,
+          "dome_ratio": 0.707,
+          "wall_thickness": 0.0025,
+          "station": 3.6371899,
+          "propellant_mass": 30.8,
+          "propellant_density": 810.0,
+          "ullage": 0.05
+        },
+        "children": [],
+        "clip_to": "Biprop Testbed/intertank",
+        "clip_locked": true,
+        "clip_side": "aft",
+        "clip_flush": true,
+        "contents": "fuel"
+      },
+      {
+        "name": "aft_skirt",
+        "kind": "stack",
+        "material": "aluminium_6061_t6",
+        "aero_role": "auto",
+        "parms": {
+          "wall_thickness": 0.0025
+        },
+        "children": [
+          {
+            "name": "engine",
+            "kind": "motor",
+            "material": "cfrp_quasi_isotropic",
+            "aero_role": "auto",
+            "parms": {
+              "propellant_mass": 0.0,
+              "propellant_density": 1800.0,
+              "station": 5.3975,
+              "length": 0.45,
+              "isp_vac": 270.0,
+              "isp_sl": 240.0,
+              "nozzle_area": 0.0,
+              "max_gimbal": 0.0,
+              "mixture_ratio": 2.3,
+              "dry_mass": 20.0,
+              "case_diameter": 0.16,
+              "nozzle_length": 0.25
+            },
+            "children": [],
+            "curve": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.15,
+                11120.0
+              ],
+              [
+                24.85,
+                10564.0
+              ],
+              [
+                25.0,
+                0.0
+              ]
+            ],
+            "burn_geometry": "radial",
+            "feed": "tanks"
+          },
+          {
+            "name": "fins",
+            "kind": "finset",
+            "material": "g10_fiberglass",
+            "aero_role": "auto",
+            "parms": {
+              "count": 4.0,
+              "root_chord": 0.5,
+              "tip_chord": 0.22,
+              "span": 0.28,
+              "sweep": 0.28,
+              "thickness": 0.006,
+              "station": 5.5475,
+              "cant": 0.0
+            },
+            "children": []
+          }
+        ],
+        "sections": [
+          {
+            "name": "skirt_fwd",
+            "shape": "circle",
+            "parms": {
+              "station": 4.6675,
+              "width": 0.2286,
+              "height": 0.2286,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "skirt_aft",
+            "shape": "circle",
+            "parms": {
+              "station": 6.0975,
+              "width": 0.2286,
+              "height": 0.2286,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          }
+        ],
+        "clip_to": "Biprop Testbed/fuel_tank",
+        "clip_locked": true,
+        "clip_side": "aft",
+        "clip_flush": true
+      },
+      {
+        "name": "recovery",
+        "kind": "pointmass",
+        "material": "cfrp_quasi_isotropic",
+        "aero_role": "auto",
+        "parms": {
+          "mass": 8.0,
+          "station": 1.2,
+          "radial_offset": 0.0,
+          "growth": 0.1
+        },
+        "children": []
+      },
+      {
+        "name": "avionics",
+        "kind": "pointmass",
+        "material": "cfrp_quasi_isotropic",
+        "aero_role": "auto",
+        "parms": {
+          "mass": 5.0,
+          "station": 1.48,
+          "radial_offset": 0.0,
+          "growth": 0.15
+        },
+        "children": []
+      },
+      {
+        "name": "pressurant",
+        "kind": "pointmass",
+        "material": "cfrp_quasi_isotropic",
+        "aero_role": "auto",
+        "parms": {
+          "mass": 9.0,
+          "station": 3.4935,
+          "radial_offset": 0.0,
+          "growth": 0.1
+        },
+        "children": []
+      },
+      {
+        "name": "feed_system",
+        "kind": "pointmass",
+        "material": "cfrp_quasi_isotropic",
+        "aero_role": "auto",
+        "parms": {
+          "mass": 6.0,
+          "station": 4.8475,
+          "radial_offset": 0.0,
+          "growth": 0.15
+        },
+        "children": []
+      }
+    ]
+  }
+}

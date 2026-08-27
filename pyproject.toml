@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mudline"
+version = "0.1.0"
+description = "6-DOF launch vehicle trajectory simulation with CAD-driven mass properties"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    # matplotlib 3.11 trips over the `six` shim vtk installs and takes every
+    # plot export with it; constraints.txt pins the version actually validated.
+    "matplotlib>=3.8,<3.11",
+    "PySide6>=6.7",
+    # The viewport's GL context. Imported inside Viewport.initializeGL, which
+    # never runs under the offscreen platform -- so a missing moderngl is
+    # invisible to the test suite and shows up only as a dead 3D view.
+    "moderngl>=5.8",
+]
+
+[project.optional-dependencies]
+cad = [
+    "cadquery>=2.4",
+    "gmsh>=4.13",
+    "trimesh>=4.0",
+    "pint>=0.24",
+    "plotly>=6.0",
+    "pyvista>=0.48",
+    "pyvistaqt>=0.11",
+]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools]
+# Two source roots: `trajectory` and `step_to_rasaero` sit at the repo root,
+# `massprops` lives under massprops/src. setuptools' automatic discovery only
+# handles one root, so the packages are listed explicitly and `massprops` is
+# pointed at its own directory. Without this, `pip install -e .` silently
+# produced an environment where `import massprops` failed.
+package-dir = { "" = ".", "massprops" = "massprops/src/massprops" }
+packages = [
+    "trajectory",
+    "trajectory.analysis",
+    "trajectory.control",
+    "trajectory.environment",
+    "trajectory.eom",
+    "trajectory.propulsion",
+    "trajectory.sim",
+    "trajectory.vehicle",
+    "step_to_rasaero",
+    "parametric",
+    "aeroengine",
+    "oracle",
+    "validation",
+    "app",
+    "massprops",
+    "massprops.gui",
+    "massprops.io",
+    "massprops.mesh",
+    "massprops.model",
+    "massprops.solver",
+    "massprops.utils",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["trajectory/tests", "massprops/tests", "parametric/tests", "app/tests", "aeroengine/tests", "validation/tests"]
+pythonpath = [".", "massprops/src"]
+python_files = ["test_*.py"]
+addopts = "-q"
+markers = [
+    "slow: exercises CAD generation or meshing; deselect with -m 'not slow'",
+    "oracle: compares the native aero engine against committed RASAero output; deselect with -m 'not oracle'",
+]

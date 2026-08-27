@@ -1,0 +1,331 @@
+{
+  "format": "mudline.parametric.v1",
+  "name": "combo_two_fin_sets",
+  "revision": "A",
+  "description": "Oracle test vehicle: combo_two_fin_sets. RASAero surface finish 'Smooth (Zero Roughness)'. Generated from oracle/vehicles.py. An approximation for viewing and flying -- the CDX1 beside it is what RASAero actually solved.",
+  "vehicle_class": "rocket",
+  "clip_overlap_m": 0.0005,
+  "tree": {
+    "name": "combo_two_fin_sets",
+    "kind": "component",
+    "material": "cfrp_quasi_isotropic",
+    "aero_role": "auto",
+    "parms": {},
+    "children": [
+      {
+        "name": "nose",
+        "kind": "stack",
+        "material": "cfrp_quasi_isotropic",
+        "aero_role": "auto",
+        "parms": {
+          "wall_thickness": 0.003
+        },
+        "children": [],
+        "nose_profile": "ogive",
+        "nose_tip_radius_m": 0.0015,
+        "sections": [
+          {
+            "name": "nose_0",
+            "shape": "circle",
+            "parms": {
+              "station": 0.0,
+              "width": 0.003,
+              "height": 0.003,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_1",
+            "shape": "circle",
+            "parms": {
+              "station": 0.001669726291750301,
+              "width": 0.003,
+              "height": 0.003,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_2",
+            "shape": "circle",
+            "parms": {
+              "station": 0.0066606112963360255,
+              "width": 0.004511649222417313,
+              "height": 0.004511649222417313,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_3",
+            "shape": "circle",
+            "parms": {
+              "station": 0.014917973833237202,
+              "width": 0.009951286702691187,
+              "height": 0.009951286702691187,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_4",
+            "shape": "circle",
+            "parms": {
+              "station": 0.02635134451053525,
+              "width": 0.017205154021243674,
+              "height": 0.017205154021243674,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_5",
+            "shape": "circle",
+            "parms": {
+              "station": 0.040835456926503075,
+              "width": 0.02593653990377387,
+              "height": 0.02593653990377387,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_6",
+            "shape": "circle",
+            "parms": {
+              "station": 0.058211620114516006,
+              "width": 0.03574552890470506,
+              "height": 0.03574552890470506,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_7",
+            "shape": "circle",
+            "parms": {
+              "station": 0.0782894571944902,
+              "width": 0.04618969846664056,
+              "height": 0.04618969846664056,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_8",
+            "shape": "circle",
+            "parms": {
+              "station": 0.10084899118182,
+              "width": 0.05680574012841655,
+              "height": 0.05680574012841655,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_9",
+            "shape": "circle",
+            "parms": {
+              "station": 0.12564305510125418,
+              "width": 0.06713070441586622,
+              "height": 0.06713070441586622,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_10",
+            "shape": "circle",
+            "parms": {
+              "station": 0.15239999999999995,
+              "width": 0.07672184437451413,
+              "height": 0.07672184437451413,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_11",
+            "shape": "circle",
+            "parms": {
+              "station": 0.18082667119049603,
+              "width": 0.08517433832037358,
+              "height": 0.08517433832037358,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_12",
+            "shape": "circle",
+            "parms": {
+              "station": 0.21061162011451598,
+              "width": 0.09213645394612602,
+              "height": 0.09213645394612602,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_13",
+            "shape": "circle",
+            "parms": {
+              "station": 0.2414285166387469,
+              "width": 0.09732194046419052,
+              "height": 0.09732194046419052,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_14",
+            "shape": "circle",
+            "parms": {
+              "station": 0.27293972439601916,
+              "width": 0.10051959035666003,
+              "height": 0.10051959035666003,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "nose_15",
+            "shape": "circle",
+            "parms": {
+              "station": 0.3047999999999999,
+              "width": 0.10159999999999991,
+              "height": 0.10159999999999991,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "name": "body_tube",
+        "kind": "stack",
+        "material": "cfrp_quasi_isotropic",
+        "aero_role": "auto",
+        "parms": {
+          "wall_thickness": 0.003
+        },
+        "children": [
+          {
+            "name": "forward_fins",
+            "kind": "finset",
+            "material": "g10_fiberglass",
+            "aero_role": "auto",
+            "parms": {
+              "count": 4.0,
+              "root_chord": 0.2032,
+              "tip_chord": 0.1016,
+              "span": 0.1016,
+              "sweep": 0.1016,
+              "thickness": 0.003175,
+              "station": 0.5587999999999997,
+              "cant": 0.0
+            },
+            "children": []
+          }
+        ],
+        "sections": [
+          {
+            "name": "body_fwd",
+            "shape": "circle",
+            "parms": {
+              "station": 0.30479999999999996,
+              "width": 0.1016,
+              "height": 0.1016,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "body_aft",
+            "shape": "circle",
+            "parms": {
+              "station": 1.5239999999999998,
+              "width": 0.1016,
+              "height": 0.1016,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "name": "fin_can",
+        "kind": "stack",
+        "material": "cfrp_quasi_isotropic",
+        "aero_role": "auto",
+        "parms": {
+          "wall_thickness": 0.003
+        },
+        "children": [
+          {
+            "name": "fins",
+            "kind": "finset",
+            "material": "g10_fiberglass",
+            "aero_role": "auto",
+            "parms": {
+              "count": 3.0,
+              "root_chord": 0.2032,
+              "tip_chord": 0.1016,
+              "span": 0.1016,
+              "sweep": 0.1016,
+              "thickness": 0.003175,
+              "station": 1.5239999999999998,
+              "cant": 0.0
+            },
+            "children": []
+          }
+        ],
+        "sections": [
+          {
+            "name": "can_fwd",
+            "shape": "circle",
+            "parms": {
+              "station": 1.5239999999999998,
+              "width": 0.1143,
+              "height": 0.1143,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          },
+          {
+            "name": "can_aft",
+            "shape": "circle",
+            "parms": {
+              "station": 1.7779999999999998,
+              "width": 0.1143,
+              "height": 0.1143,
+              "exponent": 2.0,
+              "corner_radius": 0.0,
+              "tangent": 1.0
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+﻿UG to STEP
+! INFO-     NX STEP AP242 - V2306.8900
+! INFO-      
+! INFO-     Start of Translation: 7-MAY-2026  11:49:35 AM
+! INFO-      
+! STATUS-   Converting Part: %UGMGR=V3.2 PH=g1KAAISK5WSjiC PRH=wFOAAISK5WSjiC PN=00000036 PRN=- RT="has shape" AT="UG master part file"
+! STATUS-    
+! STATUS-   Converting to Output Form (Phase 2 of 3): 7-MAY-2026 11:49:35 AM
+! STATUS-    
+! INFO-     Bspline aprx. value in effect for this translation :0.000025  meters 
+! INFO-      
+! INFO-           Summary of STEP Entities 
+! INFO-      
+! INFO-     Entity Type                                                   Count 
+! INFO-     -----------                                                   ------ 
+! INFO-     application_context ......................................:   1 
+! INFO-     application_protocol_definition ..........................:   1 
+! INFO-     applied_document_reference ...............................:   1 
+! INFO-     applied_external_identification_assignment ...............:   1 
+! INFO-     axis2_placement_3d .......................................:   18 
+! INFO-     boolean_representation_item ..............................:   9 
+! INFO-     camera_model_d3 ..........................................:   8 
+! INFO-     cartesian_point ..........................................:   26 
+! INFO-     context_dependent_shape_representation ...................:   1 
+! INFO-     default_model_geometric_view .............................:   1 
+! INFO-     descriptive_representation_item ..........................:   41 
+! INFO-     direction ................................................:   36 
+! INFO-     document_file ............................................:   1 
+! INFO-     document_type ............................................:   1 
+! INFO-     draughting_model .........................................:   9 
+! INFO-     external_source ..........................................:   1 
+! INFO-     general_property .........................................:   52 
+! INFO-     general_property_association .............................:   52 
+! INFO-     geometric_representation_context_and_global_uncertainty_a :   2 
+! INFO-     identification_role ......................................:   1 
+! INFO-     item_defined_transformation ..............................:   1 
+! INFO-     length_unit_and_si_unit ..................................:   1 
+! INFO-     mapped_item ..............................................:   9 
+! INFO-     mechanical_design_and_draughting_relationship ............:   8 
+! INFO-     mechanical_design_geometric_presentation_representation ..:   1 
+! INFO-     model_geometric_view .....................................:   7 
+! INFO-     next_assembly_usage_occurrence ...........................:   1 
+! INFO-     planar_box ...............................................:   8 
+! INFO-     plane_angle_unit_and_si_unit .............................:   1 
+! INFO-     product ..................................................:   2 
+! INFO-     product_category .........................................:   2 
+! INFO-     product_context ..........................................:   2 
+! INFO-     product_definition .......................................:   2 
+! INFO-     product_definition_context ...............................:   2 
+! INFO-     product_definition_formation_with_specified_source .......:   2 
+! INFO-     product_definition_shape .................................:   3 
+! INFO-     product_related_product_category .........................:   2 
+! INFO-     property_definition ......................................:   56 
+! INFO-     property_definition_representation .......................:   56 
+! INFO-     real_representation_item .................................:   5 
+! INFO-     representation ...........................................:   55 
+! INFO-     representation_map .......................................:   9 
+! INFO-     representation_relationship_with_transformation_and_shape :   1 
+! INFO-     shape_definition_representation ..........................:   2 
+! INFO-     shape_representation .....................................:   2 
+! INFO-     si_unit_and_solid_angle_unit .............................:   1 
+! INFO-     uncertainty_measure_with_unit ............................:   2 
+! INFO-     view_volume ..............................................:   8 
+! INFO-                                                                  ------- 
+! INFO-     Total                                                         514 
+! INFO-      
+! INFO-     End of Translation: 7-MAY-2026  11:49:43 AM
+! INFO-      

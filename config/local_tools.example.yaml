@@ -1,0 +1,4 @@
+rasaero:
+  exe_path: "C:/Program Files (x86)/RASAero II/RASAero II.exe"
+  documents_dir: "C:/Users/<your-username>/Documents/RASAero II"
+  open_after_generate: true

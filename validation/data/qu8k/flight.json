@@ -1,0 +1,29 @@
+{
+  "name": "Qu8k",
+  "cdx1": "Qu8k.CDX1",
+  "flown": "2011-09-30, Black Rock Desert, NV",
+  "liftoff_weight_lb": 314.5,
+  "propellant_weight_lb": 160.0,
+  "burnout_weight_lb": 154.5,
+  "site_elevation_ft": 3907.0,
+  "coast_start_s": 14.0,
+  "coast_end_s": 30.0,
+  "coast_note": "burnout ~10.7 s but the Q-18,000 tail-off suppresses apparent drag into ~13.5 s; past 30 s (>60 kft) the drag reading approaches the 0.1 G quantization step",
+  "trace": {
+    "file": "trace.csv",
+    "instrument": "AIM RDAS (firmware 3.7), axial accelerometer",
+    "sample_hz": 50.0,
+    "thinned_from_hz": 200.0,
+    "accel_convention": "specific force in G: +1.0 at rest on the pad, ~0 in free coast",
+    "accel_quantization_G": 0.1,
+    "baro_ceiling_ft": 39910.0
+  },
+  "measured_apogee_ft": 121478.0,
+  "apogee_note": "accelerometer-integrated path length; Deville corrects to 120,926 ft vertical for the 2.2 mi horizontal offset",
+  "sources": [
+    "https://web.archive.org/web/20111211033724/http://www.ddeville.com/derek/Qu8k.html",
+    "Qu8k - The Story (Deville, 2011), p.30 weight table",
+    "https://www.rasaero.com/comparisons-flight.htm"
+  ],
+  "weights_note": "154.5 lb is the rocket WEIGHED right after the flight (Qu8k - The Story, p.30 measured column); GLOW 314.5, propellant 160. Earlier 320/153/167 figures were from the archived spec page and are superseded."
+}
