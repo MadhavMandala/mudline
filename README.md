@@ -1,8 +1,8 @@
 # Mudline
 
-An end-to-end launch-vehicle design tool. Build a rocket parametrically or
-import it from CAD, solve its mass properties, generate its aerodynamics, and
-fly it in 6-DOF, all from one application on one model.
+A launch-vehicle design tool. Build a rocket parametrically or import it from
+CAD, solve its mass properties, generate its aerodynamics, and fly it in 6-DOF,
+all from one application on one model.
 
 ```bash
 python -m venv .venv
@@ -11,57 +11,39 @@ python -m venv .venv
 .venv/Scripts/python.exe -m app
 ```
 
-New here? [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) walks from a blank
-window to a flown trajectory in about twenty minutes.
+Install with `-c constraints.txt`. Without the pins a fresh environment
+resolves newer releases that break plot export and parametric geometry.
+
+[docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) goes from a blank window to
+a flown trajectory.
 
 ---
 
 ## Where the aerodynamics come from
 
-Read this before you trust a number out of this tool.
+`aeroengine` is a transcription of RASAero II's aerodynamics solver, derived
+from the decompiled binary. It is not a reimplementation from published theory
+and not a clean-room rewrite.
 
-The `aeroengine` package is a line-by-line transcription of RASAero II's
-aerodynamics solver, derived from the decompiled binary. A transcription, not a
-reimplementation from published theory and not a clean-room rewrite. The
-comments cite the decompiled source by line number 622 times, because that is
-how the code was written, and pretending otherwise would make it impossible to
-review.
+RASAero II is Charles E. Rogers' work. The aerodynamic model, the correlations
+and the curve fits are his. `aeroengine` and `oracle` are the only derived
+parts of this repository; everything else is original.
 
-Four consequences follow.
+The transcription is bug-for-bug on purpose. It reproduces known defects
+because per-term agreement with RASAero is the acceptance bar, and a port that
+silently fixes things cannot demonstrate it is a port. The defects are listed
+below.
 
-RASAero II is Charles E. Rogers' work. The aerodynamic model, the
-correlations, the curve fits and the branch structure are his. What is
-original here is the surrounding tool, the validation instrumentation, and the
-analysis of where his model departs from flight data.
-
-The transcription is bug-for-bug on purpose. It reproduces defects
-deliberately, and the table below lists them. That is the only way to prove a
-port is faithful, and an unfaithful port is worse than none.
-
-It comes to 15% of this repository. `aeroengine` and `oracle` are 7,808 lines
-of 53,000. The parametric modelling, CAD import, mass properties, 6-DOF
-simulation and validation work are original and contain no transcribed code.
-Not one decompiled-source citation exists outside those two packages, which you
-can check with grep.
-
-If you own RASAero II, use it. The `"rasaero-app"` aero method drives the real
-application and imports its export. It is the reference; this is the copy.
-
-If you are Charles Rogers, or represent him, and you want this taken down or
-changed, open an issue or email the address in the commit log. That is not a
-formality. I will do it.
+If you own RASAero II, the `"rasaero-app"` aero method drives the real
+application and imports its export.
 
 ---
 
-## What this tool has
+## The model
 
-### The model
-
-Geometry follows OpenVSP's method rather than a fixed catalogue of shapes. A
-body is not "a nose type plus tubes"; it is an ordered stack of cross-sections
-along a spine. An ogive nose, a conical transition, a boattail and a payload
-bulge are the same object with different sections, so there is no shape
-enumeration to extend when a design needs something new.
+Geometry follows OpenVSP's method. A body is an ordered stack of
+cross-sections along a spine, so a nose, a transition and a boattail are the
+same object with different sections.
 
 ```
 VehicleModel
@@ -73,42 +55,26 @@ VehicleModel
  └─ PointMass "avionics"  mass with a station, no geometry
 ```
 
-Every number is a Parm: named, bounded, change-tracked. That gives the editor
-its slider ranges for free, lets a rebuild skip untouched geometry, and gives a
-design variable or optimiser a stable address to drive.
+Every number is a Parm: named, bounded, change-tracked. One Stack is one
+manufactured part, with one material and one wall thickness.
 
-Analytic nose profiles (conical, ogive, von Kármán, elliptical, power) survive
-as *generators* that emit sections, clustered toward the tip where the
-curvature is. Once emitted they are ordinary, individually editable sections.
-
-One Stack is one manufactured part, with one material and one wall thickness. A
-fibreglass nose, a thin carbon tube and a thicker aluminium motor tube are
-three parts with three masses.
-
-### Two ways in, one model
-
-```
-parametric build ──┐
-                   ├──→ VehicleModel ──→ mass · aero · trajectory · dispersion
-STEP import ───────┘
-```
+Analytic nose profiles (conical, ogive, von Kármán, elliptical, power) are
+generators that emit sections. Once emitted the sections are ordinary and
+individually editable.
 
 `File → Import STEP` slices a solid along its axis, measures the cross-section
 at each station, and fits a Stack, so an import is editable rather than a dead
-mesh. Sections are placed by the error they remove, so a cylinder returns as
-two and a curved nose as a dozen. The importer measures two radii per station:
-the lateral extent gives the outer mould line, the slab volume gives an
-equivalent material radius, and their disagreement is how a hollow shell is
-detected and its wall thickness recovered.
+mesh. It measures two radii per station: the lateral extent gives the outer
+mould line and the slab volume gives an equivalent material radius, and their
+disagreement recovers wall thickness. Round-tripping known geometry gives exact
+length, diameter −0.1%, wall exact, mass +0.3%, 0.20 mm RMS radius residual.
 
-Round-tripping known geometry: length exact, diameter −0.1%, wall recovered
-exactly, mass +0.3%, 0.20 mm RMS radius residual.
+A STEP assembly imports as an assembly, with each solid assigned to a part and
+materials read from the file.
 
-A STEP assembly can be imported as the assembly it is, with each solid assigned
-to the part it represents and materials and mass properties read out of the
-file where the CAD package wrote them.
+---
 
-### The application
+## The application
 
 ```
 tree            viewport                     properties
@@ -119,11 +85,11 @@ made of         HUD, selection highlight     with derived values
 status bar      dry / wet mass · CG · static margin · length · fineness
 ```
 
-Editing is live. Drag a fin span and the geometry rebuilds, the tree masses
-update, and CG and static margin move with it. Only the changed solids are
-rebuilt, in about 0.1 s.
+Editing is live. Drag a fin span and the geometry rebuilds, tree masses update,
+and CG and static margin move with it. Only changed solids rebuild, in about
+0.1 s.
 
-| Menu | What it does |
+| Menu | Contents |
 |---|---|
 | File | new, open, save, import/export STEP |
 | Edit | undo, redo |
@@ -132,126 +98,88 @@ rebuilt, in about 0.1 s.
 | Analysis | mass properties, aerodynamics, run flight, dispersion study, design sweep, compare with RASAero, export RASAero model / aero table |
 | Help | about, limitations, open log folder, check environment |
 
-Also in the window: an undo stack by snapshot, a mass budget panel, a thrust
-curve editor, a results panel with run history and two-run comparison, autosave
-every two minutes, and a project file that keeps the analysis runs alongside
-the vehicle.
+Also: undo by snapshot, mass budget panel, thrust curve editor, results panel
+with run history and two-run comparison, autosave every two minutes, and a
+project file holding the analysis runs alongside the vehicle.
 
-### Analysis chain
+---
 
-| Stage | What it produces |
+## Analysis
+
+| Stage | Produces |
 |---|---|
-| Mass | Meshes each part and aggregates: mass, CG, full inertia tensor |
+| Mass | Meshes each part and aggregates mass, CG, full inertia tensor |
 | Aero | Solves the canonical parts, in-process or by driving RASAero II |
 | Flight | 6-DOF trajectory with launch rail, recovery phases, dispersion |
 
-The aero stage runs in-process by default. `AeroDatabase` is the stable
-interface, so CFD or wind-tunnel data can replace either method without the
-trajectory code changing.
+`AeroDatabase` is the stable interface, so CFD or wind-tunnel data can replace
+either aero method without changing trajectory code.
 
-### Simulation
+The simulation runs 6-DOF over a 14-element state (position, velocity,
+quaternion, body rates, propellant), with US Standard Atmosphere 1976 to
+300 km, aerodynamic damping, a launch rail with two-button tip-off, phased
+recovery, and Monte Carlo dispersion with CEP and landing ellipses.
 
-6-DOF over a 14-element state (position, velocity, quaternion, body rates,
-propellant). US Standard Atmosphere 1976 to 300 km, aerodynamic damping,
-launch rail with two-button tip-off, phased recovery with drogue and main,
-Monte Carlo dispersion with CEP and landing ellipses, CSV and plot export.
+A flight runs until the vehicle returns to its launch altitude. There is no
+time cutoff, and each phase integrates until its own event fires. Pad altitude
+is real: the state is integrated above sea level, and recovery altitudes read
+the way an altimeter reads them. Run Flight, the design sweep and the
+dispersion study share one launch sequence.
 
-A flight runs until the vehicle is back at the altitude it launched from. There
-is no time cutoff. Each phase is integrated until its own event fires, whether
-apogee, main deployment or ground impact, and the result says whether it
-landed.
+Every flight keeps a log of the force model replayed along the stored states,
+giving thrust, drag, angle of attack, CG, CP, static margin, felt acceleration
+and body rates per sample.
 
-The pad altitude is real. The state is integrated above sea level, so the air
-is as thin as it is at the site, the ground is the pad, and recovery altitudes
-are read the way an altimeter reads them, above the pad. Run Flight, the design
-sweep and the dispersion study all fly through one launch sequence, so a swept
-or dispersed apogee is the one Run Flight would report for the same design and
-settings.
-
-Every flight keeps a log: the force model replayed along the stored states, so
-thrust, drag, angle of attack, CG, CP, static margin, felt acceleration and
-body rates are there per sample, in the results panel and the exported CSV.
-
-Beyond the faithful port, the flight model carries things RASAero has no
-equivalent for.
-
-Pitch damping is a moment sum. Every lifting part contributes its normal-force
-slope at its own centre of pressure, stored as zeroth, first and second moments
-about the nose so `Cmq` can be taken about the CG the vehicle has *at that
-instant* as propellant drains. The single-surface estimate this replaces
-cancels the nose's arm against the fins' and understates damping several-fold.
-
-Roll comes from fin cant, with `Clp` and `Cl` referenced to diameter and
-`pd/2V`. Jet damping and the `İω` term of a body losing mass are in Euler's
-equations.
-
-Past the table's edge there is a high-alpha extension: Jorgensen crossflow on
-the body, Allen–Perkins `η`, and stalled flat plates for the fins, blended in
-over 15°, bounded and the right size out to 90°. It is a correlation, not a
-computation.
-
-Winds aloft and Dryden turbulence use MIL-F-8785C scales, frozen along
-altitude. Build imperfections are dispersion variables: thrust misalignment, CG
-offset, fin cant error. A tank-fed vehicle drains each tank as its own settling
-column, split by mixture ratio, with a waterfall when one side runs dry, so CG
-and inertia follow the propellant that is actually left, where it actually is.
+Beyond the port, the flight model adds pitch damping as a moment sum about the
+current CG, roll from fin cant, jet damping and the `İω` term, a high-alpha
+extension past the table edge (Jorgensen crossflow, Allen–Perkins `η`, stalled
+flat plates, blended over 15°), winds aloft with Dryden turbulence, build
+imperfections as dispersion variables, and per-tank propellant draining split
+by mixture ratio.
 
 ---
 
 ## Where this differs from RASAero II
 
-The port is faithful by mandate. Every deviation is deliberate and listed here.
-
-### Reproduced defects, kept on purpose
-
-Kept because the acceptance bar is per-term agreement, and a port that silently
-fixes things cannot prove it is a port.
+### Reproduced defects
 
 | What | Effect |
 |---|---|
-| Two values of π | `3.14159` in most area work, `Math.PI` in some of the same expressions, so two values of A_ref differ by 8.4e-7 relative. Which appears where is load-bearing. |
-| Reducer closed to a point | A tail cone's CP is never stored and keeps the loop's leftover zero, so its negative normal force is applied at the nose tip, dragging vehicle CP forward. |
-| Inclined plate at 0° | Divides by `sin(0)`, yielding ±Infinity or NaN, which propagates into the vehicle total. Reproduced in IEEE-754 explicitly, since Python would otherwise raise. |
-| Roughness-cutoff step | A 48% jump in the friction coefficient, visible as a step in C_D. |
-| A dimensionally inconsistent fin term | Left alone: it is what RASAero prints. |
+| Two values of π | `3.14159` in most area work, `Math.PI` in some of the same expressions, so two values of A_ref differ by 8.4e-7 relative |
+| Reducer closed to a point | A tail cone's CP is never stored and keeps the loop's leftover zero, so its negative normal force applies at the nose tip |
+| Inclined plate at 0° | Divides by `sin(0)`, yielding ±Infinity or NaN, which propagates into the vehicle total. Reproduced in IEEE-754 explicitly |
+| Roughness-cutoff step | A 48% jump in the friction coefficient, visible as a step in C_D |
+| A dimensionally inconsistent fin term | Left alone: it is what RASAero prints |
 
-### Refused, where reproducing would dress nonsense as agreement
+### Refused
 
 A fin can over a transition. RASAero shortens the last body tube regardless of
-what lies between it and the can, overlapping the can with that part and
-leaving a hole in the body. The geometry is not a solid. It still returns
-numbers. This raises an error instead.
+what lies between it and the can, leaving a hole in the body. The geometry is
+not a solid. This raises an error instead.
 
 ### Corrected, opt-in and off by default
 
-`boattail_model="corrected"` replaces the supersonic boattail branch. Same
-Hoerner cube law, closed with the geometric base area instead of the boattail's
-forward area, and with no separation clamp. Three defects go away by
-construction: base drag can no longer go *negative*, which the clamp's
-unfloored effective diameter allowed; a short steep boattail is no longer
-charged as a near-cylinder; and a fin set listed after the boattail no longer
-degrades to zero.
+`boattail_model="corrected"` replaces the supersonic boattail branch with the
+same Hoerner cube law closed on the geometric base area, and no separation
+clamp. Base drag can no longer go negative, a short steep boattail is no longer
+charged as a near-cylinder, and a fin set after the boattail no longer degrades
+to zero. It is provisional and closes about a quarter of the gap against
+measured drag.
 
-Provisional means provisional. Against measured drag it closes about a quarter
-of the gap, as the next section shows. The default everywhere is the faithful
-port, and the oracle tests always run the port.
-
-### How faithfulness is proved
+### How faithfulness is checked
 
 `oracle/` holds RASAero II's own Tools → Run Test output, frozen: 130
-vehicle/alpha cases, 2,500 Mach points each, 28 terms per point, covering
-friction, form, wave, base, each fin contribution and Reynolds number. Every
-one is compared term by term, with zero disagreements outside RASAero's printed
-precision. Sixty minimal CDX1 vehicles each isolate one branch of the solver.
+vehicle/alpha cases, 2,500 Mach points each, 28 terms per point. Every term is
+compared, with zero disagreements outside RASAero's printed precision. Sixty
+minimal CDX1 vehicles each isolate one branch of the solver. See
+[oracle/README.md](oracle/README.md).
 
 ---
 
 ## What the flight data says
 
-### Against measured apogees
-
 `python -m validation.scoreboard` scores against the measured-altitude flights
-RASAero II ships as examples, using its own motor database and launch sites.
+RASAero II ships as examples.
 
 | | bias | mean \|err\| | within 5% |
 |---|---|---|---|
@@ -259,35 +187,23 @@ RASAero II ships as examples, using its own motor database and launch sites.
 | this tool, frozen table | +0.99% | 5.71% | 7/21 |
 | this tool, altitude-coupled table | +0.48% | 5.38% | 8/21 |
 
-Mean absolute error is not meaningfully better. 5.66% against 5.38%, and
-RASAero gets *more* flights inside 5% than this does. What changes is the bias.
-RASAero's published predictions run systematically high, and coupling the drag
-table to the altitudes actually flown removes most of that. Fly, rebuild the
-table where the vehicle actually went, re-fly until apogee settles. It is worth
-up to 2,000 ft on a high flight, and it corrects bias rather than improving
-accuracy.
+Mean absolute error is not meaningfully better, and RASAero gets more flights
+inside 5%. What changes is the bias: coupling the drag table to the altitudes
+actually flown removes most of the systematic high bias, worth up to 2,000 ft
+on a high flight.
 
-A control run pins where the remaining error lives. This engine's frozen-table
-prediction differs from RASAero's own by a mean of 1.50% on the same inputs.
-Same aero, same motor, same site, so what is left is the trajectory integrator,
-and it is small next to the 5% errors. Those errors belong to the aerodynamic
-model.
+A control run separates the aerodynamics from the integrator. This engine's
+frozen-table prediction differs from RASAero's own by a mean of 1.50% on the
+same inputs, so the 5% errors belong to the aerodynamic model rather than the
+trajectory code.
 
-Two supersonic-boattail flights are set aside, and this tool does *worse* on
-them than RASAero's published numbers (−10.8% against −2.8%). The reason is
-version, not physics: those predictions predate RASAero II's 2015 boattail
-rewrite, and this engine reproduces the current one. The control on those two
-is 8.2% against 1.5% everywhere else. The software generations disagree, so
-apogee cannot score them.
+Two supersonic-boattail flights are set aside. This tool does worse on them
+than RASAero's published numbers (−10.8% against −2.8%) because those
+predictions predate RASAero II's 2015 boattail rewrite.
 
-### Against measured drag
-
-Apogee is the integral of drag, and integrals keep secrets, so there is a
-second instrument. `python -m validation.telemetry` reconstructs CD(Mach)
-directly from a flight's coast-phase accelerometer log.
-
-The committed Qu8k card integrates to 121,052 ft against a published 121,478
-ft, off by −0.35%. Its verdict on the model is the uncomfortable part:
+`python -m validation.telemetry` reconstructs CD(Mach) from a flight's
+coast-phase accelerometer log. The committed Qu8k card integrates to 121,052 ft
+against a published 121,478 ft.
 
 ```
      Mach 1.98 – 2.88, 19 bins, 66.8 → 32.2 kft
@@ -297,25 +213,16 @@ ft, off by −0.35%. Its verdict on the model is the uncomfortable part:
      corrected boattail 0.39 – 0.53     mean  +48.5%   range +28% ..  +82%
 ```
 
-Through Mach 2.1–2.9 the vehicle flew at CD ≈ 0.30 while the model predicts
-0.44 to 0.59, and that holds for any generation of the model. Base drag alone
-cannot account for a gap that size; the wave, fin and friction terms are
-implicated too. The provisional boattail correction improves it without fixing
-it.
+The vehicle flew at CD ≈ 0.30 where the model predicts 0.44 to 0.59, for any
+generation of the model. That is larger than base drag alone accounts for, so
+the wave, fin and friction terms are implicated. The reduction was
+cross-checked against Deville's own integration (2 fps, 46 ft), the barometric
+overlap (0–2% at the highest-Mach bins), and the accelerometer bias measured at
+apogee (−0.016 G, the wrong sign to rescue the model), with burnout mass
+corrected to the weighed 154.5 lb.
 
-The reduction was cross-checked five ways. It matches Deville's own integration
-to 2 fps and 46 ft. The barometric overlap agrees to within 0–2% at the
-highest-Mach bins. The accelerometer bias measured in the apogee quiet window
-is −0.016 G, small and the *wrong sign* to rescue the model. And the burnout
-mass was corrected to the weighed 154.5 lb rather than spec-sheet arithmetic.
-
-An error that large moves apogee only single digits because over the coast,
-gravity took 2,579 fps and drag only 623 fps of a 3,203 fps burnout speed.
-
-Matching RASAero exactly does not make RASAero right. A tool that is
-bug-compatible with a model running 40 to 100% high on supersonic drag is
-bug-compatible with an error. This repository contains both the copy and the
-measurement that indicts it.
+The error moves apogee only single digits because over the coast gravity took
+2,579 fps and drag only 623 fps of a 3,203 fps burnout speed.
 
 ---
 
@@ -323,8 +230,8 @@ measurement that indicts it.
 
 | Package | Role | Origin |
 |---|---|---|
-| `parametric/` | The model: parms, cross-sections, components, lofting, import, analysis bridge | original |
-| `app/` | The application: viewport, tree, parm and section editors | original |
+| `parametric/` | Parms, cross-sections, components, lofting, import, analysis bridge | original |
+| `app/` | Viewport, tree, parm and section editors | original |
 | `trajectory/` | 6-DOF simulation, environment, recovery, dispersion, export | original |
 | `massprops/` | STEP meshing and exact mass properties | original |
 | `validation/` | Scores the aerodynamics against measured flights and telemetry | original |
@@ -334,44 +241,39 @@ measurement that indicts it.
 
 ---
 
-## Conventions, which are easy to get wrong
+## Conventions
 
 * Model axis is +Z aft, origin at the nose tip, so a station is a Z.
-* Simulator body frame is +Y forward. The mapping is a *rotation*, so the
-  inertia tensor transforms rather than being reordered.
+* Simulator body frame is +Y forward. The mapping is a rotation, so the inertia
+  tensor transforms rather than being reordered.
 * `quat_to_dcm(q)` returns body-to-inertial; inertial-to-body is its transpose.
 * Thrust curves declare their reference (`"vacuum"` or `"sea_level"`).
-* The engine is internally imperial, in inches, pounds and °R, because the
-  transcribed constants are. SI meets English in exactly one place,
-  `aeroengine/adapters.py`.
+* The engine is internally imperial, in inches, pounds and °R. SI meets English
+  in one place, `aeroengine/adapters.py`.
 
 ---
 
 ## Limitations
 
-Deliberate, so they are not mistaken for oversights. Also on Help → Limitations,
-next to whatever the open vehicle specifically triggers.
+Also on Help → Limitations, next to whatever the open vehicle triggers.
 
-* No control. The gimbal is modelled but never commanded, so flights are
-  unguided.
+* No control. The gimbal is modelled but never commanded.
 * No staging. Single stage, no separation events.
-* No slosh. A tank's propellant drains and its CG moves, but the liquid is
-  rigid, and a motor burns by its declared geometry rather than a
-  grain-regression model.
-* Flat-Earth gravity. Coriolis is available and off by default. Fine for
-  sounding rockets, not for orbit.
-* Roll is rigid-body only. There is no roll-pitch resonance or lock-in
-  analysis, and no fin-alpha reduction at high roll rates.
-* No structures or thermal. Max-Q is reported but nothing consumes it, so there
-  is no fin flutter, buckling, or aeroheating.
+* No slosh. Propellant drains and CG moves, but the liquid is rigid, and a
+  motor burns by declared geometry rather than grain regression.
+* Flat-Earth gravity. Coriolis is available and off by default.
+* Roll is rigid-body only. No roll-pitch resonance, lock-in analysis, or
+  fin-alpha reduction at high roll rates.
+* No structures or thermal. Max-Q is reported but nothing consumes it.
 * Aero is component-buildup. It degrades at high alpha, on blunt bodies, and
-  wherever a plume fills the base. Past the table's alpha range the model blends
-  into an empirical extension that is a correlation, not a computation.
-* Fins are flat plates in geometry. No airfoil section yet.
+  wherever a plume fills the base. Past the table's alpha range the model
+  blends into an empirical extension, which is a correlation rather than a
+  computation.
+* Fins are flat plates in geometry. No airfoil section.
 * The supersonic drag disagreement above is unresolved. A vehicle whose
-  boattail is steeper than RASAero's 17.5° separation clamp and flies past Mach
-  1.2 carries the caveat in its aero report, its aerodynamics setup, its flight
-  summary and its saved run.
+  boattail is steeper than the 17.5° separation clamp and flies past Mach 1.2
+  carries the caveat in its aero report, aerodynamics setup, flight summary and
+  saved run.
 
 ---
 
@@ -383,28 +285,19 @@ python -m pytest -m "not slow"        # skip CAD and meshing
 python -m tools.check_environment     # is this machine set up correctly
 ```
 
-Install with `-c constraints.txt`. Without the pins a fresh environment
-resolves newer releases that break plot export and parametric geometry, and
-neither failure is visible to a test suite running on an already-working
-machine.
-
-When something goes wrong in the application it is written to a log outside the
-repository, at `%LOCALAPPDATA%\Mudline\logs` on Windows, and Help → Open Log
-Folder goes there. Send that file with a bug report. Every saved project and
-every recorded run stores the version and commit that produced it.
+Errors are logged outside the repository, at `%LOCALAPPDATA%\Mudline\logs` on
+Windows, reachable from Help → Open Log Folder. Send that file with a bug
+report. Saved projects and recorded runs store the version and commit that
+produced them.
 
 ---
 
-## Licence and status
+## Licence
 
-No licence is granted. The source is published so it can be read, checked and
-argued with, rather than reused. That is a deliberate position: `aeroengine` is
-derived from a commercial product and is not mine to relicense, and issuing a
-permissive licence over the whole repository would claim a right I do not have.
-
-If you want to use part of this in your own work, ask. The original packages,
-everything outside `aeroengine/` and `oracle/`, are the ones I can say yes
-about.
+No licence is granted. `aeroengine` is derived from a commercial product and is
+not mine to relicense, so a permissive licence over the whole repository would
+claim a right I do not have. To use part of this in your own work, ask; the
+original packages are the ones I can answer for.
 
 RASAero II is © Charles E. Rogers and Rogers Aeroscience. This project is not
 affiliated with, endorsed by, or supported by them.
